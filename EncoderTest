@@ -1,0 +1,52 @@
+package org.firstinspires.ftc.teamcode;
+
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+
+@Autonomous
+public class EncoderTest extends LinearOpMode {
+    DcMotorEx motor;
+    DcMotorEx motor2;
+
+    @Override
+    public void runOpMode() {
+        motor = hardwareMap.get(DcMotorEx.class, "left_motor");
+        motor2 = hardwareMap.get(DcMotorEx.class, "right_motor");
+        motor.setDirection(DcMotorSimple.Direction.REVERSE);
+        // Reset the encoder during initialization
+        motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        waitForStart();
+        //if robot recognizes 2nd image (move straight forward)
+        // Set the motor's target position to x ticks
+        motor.setTargetPosition(2000);
+        motor2.setTargetPosition(2000);
+        //if my calculations with virtual robot work for real life, 2000 ticks is about 1 foot
+
+        // Switch to RUN_TO_POSITION mode
+        motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        // Start the motor moving by setting the max velocity to x ticks per second
+
+        motor.setVelocity(1000);
+        motor2.setVelocity(1000);
+
+        // While the Op Mode is running, show the motor's status via telemetry
+        while (opModeIsActive()) {
+            telemetry.addData("velocity", motor.getVelocity());
+            telemetry.addData("position", motor.getCurrentPosition());
+            telemetry.addData("is at target", !motor.isBusy());
+            telemetry.update();
+        
+        //if robot recognizes 1st image (move forward, turn left, move forward)
+        //if robot recognizes 3rd image (move forward, turn  right, move forward)
+        
+        }
+        
+    }
+}
